@@ -1,6 +1,6 @@
 import requests
 import csv
-from BeatufilSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 
 url = url = 'http://www.showmeboone.com/sheriff/JailResidents/JailResidents.asp'
 response = requests.get(url)
@@ -19,4 +19,5 @@ for row in table.findAll('tr'):
 
 outfile = open("./inmates.csv", "wb")
 writer = csv.writer(outfile)
-writer.writeRows(rowsList)
+writer.writerow(["Last", "First", "Middle", "Gender", "Race", "Age", "City", "State"])
+writer.writerows(rowsList)
