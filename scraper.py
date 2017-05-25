@@ -10,9 +10,9 @@ soup = BeautifulSoup(html)
 table = soup.find('tbody', attrs={'class' : 'stripe'})
 
 rowsList = []
-for row in table.findAll('tr')
+for row in table.findAll('tr'):
   cellsList = []
-  for cell in row.findAll('td')
+  for cell in row.findAll('td'):
     text = cell.text.replace('&nbsp;', '')
     cellsList.append(text)
   rowsList.append(cellsList)
