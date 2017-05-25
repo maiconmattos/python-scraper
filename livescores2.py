@@ -11,12 +11,14 @@ for matchDiv in matchDivs :
     teamDivs = matchDiv.findAll('div', class_="ply")
     t1 = ''
     t2 = ''
+    scoreDiv = matchDiv.find('div', class_="sco")
     for teamDiv in teamDivs:
     	if 'tright' in teamDiv.attrs['class']:
            t1  = teamDiv
         else:
            t2  = teamDiv
-    print(t1.text + " ------------ " + t2.text)
+
+    print(t1.text + " " + scoreDiv.text + " " + t2.text)
     
     #t2 = matchDiv.find('div', class_="tright"
     #print(t1)
