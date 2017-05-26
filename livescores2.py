@@ -1,5 +1,4 @@
 import requests
-import csv
 from bs4 import BeautifulSoup
 
 url = "http://livescores.com"
@@ -18,16 +17,8 @@ for matchDiv in matchDivs :
     clockDiv = matchDiv.find('div', class_="min")
     for teamDiv in teamDivs:
     	if 'tright' in teamDiv.attrs['class']:
-           t1  = teamDiv
+           team1  = teamDiv.text.strip()
         else:
-           t2  = teamDiv
+           team2  = teamDiv.text.strip()
 
-    print(clockDiv.text.strip() + " : "+ t1.text.strip() + "-" + scoreT1 + " X "  + scoreT2 + "-" + t2.text.strip())
-    
-    #t2 = matchDiv.find('div', class_="tright"
-    #print(t1)
-    #print(t2)
-    
-    #score = matchDiv.find('div',class_='score')
-    #print(str(t1) + " " + str(score) + " " + str(t2))
-    
+    print(clockDiv.text.strip() + " : "+ team1 + "-" + scoreT1 + " X "  + scoreT2 + "-" + team2)
