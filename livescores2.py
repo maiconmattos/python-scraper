@@ -5,6 +5,7 @@ s = sched.scheduler(time.time, time.sleep)
 def print_time(): print "From print_time", time.time()
 
 def scrapeResults() :
+    print('  ')
     url = "http://livescores.com"
     response = requests.get(url)
     html = response.content
@@ -26,7 +27,9 @@ def scrapeResults() :
                 team2 = teamDiv.text.strip()
             print(clock + " : " + team1 + "-" + scoreT1 + " vs " + scoreT2 + "-" + team2)
     print('-----------------------------')
+    
+scrapeResults()
 
 while(True) :
-    s.enter(10, 1, scrapeResults, ())
+    s.enter(60, 1, scrapeResults, ())
     s.run()
