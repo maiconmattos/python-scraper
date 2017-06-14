@@ -1,0 +1,31 @@
+import csv
+import urllib2
+
+FILE_URL = "http://apps.sloanahrens.com/qbox-blog-resources/kaggle-titanic-data/test.csv"
+ES_HOST = {"host" : "localhost", "port" : 9200}
+INDEX_NAME = 'titanic'
+TYPE_NAME = 'passenger'
+ID_FIELD = 'passengerid'
+
+response = urllib2.urlopen(FILE_URL)
+csv_file_object = csv.reader(response)
+ 
+header = csv_file_object.next()
+header = [item.lower() for item in header]
+
+bulk_data = [] 
+for row in csv_file_object:
+    data_dict = {}
+    for i in range(len(row)):
+        data_dict[header[i]] = row[i]
+    op_dict = {
+        "index": {
+            "_index": INDEX_NAME, 
+            "_type": TYPE_NAME, 
+            "_id": data_dict[ID_FIELD]
+        }
+    }
+    bulk_data.append(op_dict)
+    bulk_data.append(data_dict)
+
+    
