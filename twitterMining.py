@@ -11,16 +11,34 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
  
 api = tweepy.API(auth)
+print("Connected on twitter :" + str(api))
 
-print(api)
+class MyStreamListener(tweepy.StreamListener):
+    def on_status(self, status):
+    	text = status.text
+    	if (text.find("SFC")>=0):
+            if (text.startswith('LATEST')):
+            	parseLatest(status.text)
+            elif (text.startswith('HALF-TIME') or text.startswith('HALF TIME') or text.startswith('HALFTIME')): 
+                parseHalfTime(status.text)
+            elif (text.startswith('FULL-TIME') or text.startswith('FULL TIME') or text.startswith('FULLTIME')): 
+	            parseFullTime(status.text)
 
-teamA = '@Galway_GAA'
-teamB = '@MayoGAA'
+def parseLatest(text):
+    print("LATEST ====> " + text)
 
-for status in tweepy.Cursor(api.user_timeline, screen_name="officialgaa", count=5000).items(500):
-	text = status.text.encode('ascii','ignore')
-	
-	if (  (text.startswith('LATEST') or text.startswith('FULL-TIME') or text.startswith('HALF-TIME') ) 
-	    and text.find("SFC")>=0 and text.find(teamA)>=0 and text.find(teamB)>=0) :
-	    print(text)
-	    print("")
+def parseHalfTime(text):
+    print("HALF-TIME ====> " + text)
+
+def parseFullTime(text):
+    print("FULL-TIME ====> " + text)            
+
+myStreamListener = MyStreamListener
+myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener())
+
+myStream.filter(follow=['874639429268381696'])
+#843856454 - @mobstatsmob
+#89700550 - @officialgaa
+#874639429268381696 - @maiconmattos83
+
+
