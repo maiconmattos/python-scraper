@@ -21,27 +21,27 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         text = status.text.upper()
         if (text.find("SFC")>=0):
-            print("---------------")
             if (text.startswith('LATEST')):
-                parseLatest(status.text)
+                parse(status.text, 'LATEST')
+            elif (text.startswith('RESULT')):
+                parse(status.text, 'RESULT')
             elif (text.startswith('HALF-TIME') or text.startswith('HALF TIME') or text.startswith('HALFTIME')): 
-                parseHalfTime(status.text)
+                parse(status.text, 'HALF-TIME')
             elif (text.startswith('FULL-TIME') or text.startswith('FULL TIME') or text.startswith('FULLTIME')): 
-                parseFullTime(status.text)
-            print("---------------")
+                parse(status.text, 'FULL-TIME')
     def on_error(self, status_code):
         if status_code == 420:
             print('Ooops! ' + str(status_code) + ' - Rate limit exceeded')
             return False
         else:
-            print('Ooops! ' + str(status_code) - ' Something went wrong')
+            print('Ooops! ' + str(status_code) + ' - Something went wrong')
             return False
 
-def parseLatest(text):
+def parse(text, event):
+    print("---------------")
     text = " " + text + " "
     print("TWEET : " + text)
     
-    event = "LATEST"
     print("EVENT : " + event)
     
     time = text[ text.find("(") : (text.find(")") + 1) ]
@@ -66,16 +66,8 @@ def parseLatest(text):
     team2ScoreFinalPos = textFromTeam2Score.find(" ")
     team2Score = textFromTeam2Score[0:team2ScoreFinalPos + 1]
     print ("TEAM2_SCORE " + team2Score)
-
-def parseHalfTime(text):
-    print(text)
-    event = "HALT-TIME"
-    print("EVENT : " + event)
-
-def parseFullTime(text):
-    print(text)
-    event = "FULL-TIME"
-    print("EVENT : " + event)      
+    print("---------------")
+    print(" ")
 
 myStreamListener = MyStreamListener
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener())
