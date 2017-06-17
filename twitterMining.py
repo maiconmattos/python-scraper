@@ -13,32 +13,75 @@ auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 print("Connected on twitter :" + str(api))
 
+rate_limit = api.rate_limit_status()
+print rate_limit['resources']['statuses']['/statuses/home_timeline']
+print rate_limit['resources']['users']['/users/lookup']
+
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-    	text = status.text
-    	if (text.find("SFC")>=0):
+        text = status.text.upper()
+        if (text.find("SFC")>=0):
+            print("---------------")
             if (text.startswith('LATEST')):
-            	parseLatest(status.text)
+                parseLatest(status.text)
             elif (text.startswith('HALF-TIME') or text.startswith('HALF TIME') or text.startswith('HALFTIME')): 
                 parseHalfTime(status.text)
             elif (text.startswith('FULL-TIME') or text.startswith('FULL TIME') or text.startswith('FULLTIME')): 
-	            parseFullTime(status.text)
+                parseFullTime(status.text)
+            print("---------------")
+    def on_error(self, status_code):
+        if status_code == 420:
+            print('Ooops! ' + str(status_code) + ' - Rate limit exceeded')
+            return False
+        else:
+            print('Ooops! ' + str(status_code) - ' Something went wrong')
+            return False
 
 def parseLatest(text):
-    print("LATEST ====> " + text)
+    text = " " + text + " "
+    print("TWEET : " + text)
+    
+    event = "LATEST"
+    print("EVENT : " + event)
+    
+    time = text[ text.find("(") : (text.find(")") + 1) ]
+    print("TIME : " + time)
+    
+    textFromTeam1Name = text[text.find("@"):]
+    team1NameFinalPos = textFromTeam1Name.find(" ")
+    team1Name = textFromTeam1Name[0:team1NameFinalPos]
+    print ("TEAM1_NAME " + team1Name)
+
+    textFromTeam1Score = textFromTeam1Name[team1NameFinalPos+1:]
+    team1ScoreFinalPos = textFromTeam1Score.find(" ")
+    team1Score = textFromTeam1Score[0:team1ScoreFinalPos]
+    print ("TEAM1_SCORE " + team1Score)
+
+    textFromTeam2Name = textFromTeam1Score[team1ScoreFinalPos+1:]
+    team2NameFinalPos = textFromTeam2Name.find(" ")
+    team2Name = textFromTeam2Name[0:team2NameFinalPos]
+    print ("TEAM1_NAME " + team2Name)
+
+    textFromTeam2Score = textFromTeam2Name[team2NameFinalPos+1:]
+    team2ScoreFinalPos = textFromTeam2Score.find(" ")
+    team2Score = textFromTeam2Score[0:team2ScoreFinalPos + 1]
+    print ("TEAM2_SCORE " + team2Score)
 
 def parseHalfTime(text):
-    print("HALF-TIME ====> " + text)
+    print(text)
+    event = "HALT-TIME"
+    print("EVENT : " + event)
 
 def parseFullTime(text):
-    print("FULL-TIME ====> " + text)            
+    print(text)
+    event = "FULL-TIME"
+    print("EVENT : " + event)      
 
 myStreamListener = MyStreamListener
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener())
 
-myStream.filter(follow=['874639429268381696'])
+myStream.filter(follow=['89700550'])
 #843856454 - @mobstatsmob
 #89700550 - @officialgaa
 #874639429268381696 - @maiconmattos83
-
 
