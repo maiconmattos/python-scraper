@@ -19,16 +19,16 @@ print rate_limit['resources']['users']['/users/lookup']
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        text = (' '.join(status.text.split()) + " ").upper()
-        if (text.find("SFC")>=0):
-            if (text.startswith('LATEST')):
-                parse(status.text, 'LATEST')
-            elif (text.startswith('RESULT')):
-                parse(status.text, 'RESULT')
-            elif (text.startswith('HALF-TIME') or text.startswith('HALF TIME') or text.startswith('HALFTIME')): 
-                parse(status.text, 'HALF-TIME')
-            elif (text.startswith('FULL-TIME') or text.startswith('FULL TIME') or text.startswith('FULLTIME')): 
-                parse(status.text, 'FULL-TIME')
+        text = (' '.join(status.text.split()) + " ")
+        if (text.upper().find("SFC")>=0):
+            if (text.upper().startswith('LATEST')):
+                parse(text, 'LATEST')
+            elif (text.upper().startswith('RESULT')):
+                parse(text, 'RESULT')
+            elif (text.upper().startswith('HALF-TIME') or text.upper().startswith('HALF TIME') or text.upper().startswith('HALFTIME')): 
+                parse(text, 'HALF-TIME')
+            elif (text.upper().startswith('FULL-TIME') or text.upper().startswith('FULL TIME') or text.upper().startswith('FULLTIME')): 
+                parse(text, 'FULL-TIME')
     def on_error(self, status_code):
         if status_code == 420:
             print('Ooops! ' + str(status_code) + ' - Rate limit exceeded')
