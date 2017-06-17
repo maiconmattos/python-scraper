@@ -19,7 +19,9 @@ print rate_limit['resources']['users']['/users/lookup']
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        text = status.text.upper()
+        textToUpper = (' '.join(text.split()) + " ").upper()
+        
+        status.text.upper()
         if (text.find("SFC")>=0):
             if (text.startswith('LATEST')):
                 parse(status.text, 'LATEST')
@@ -39,7 +41,6 @@ class MyStreamListener(tweepy.StreamListener):
 
 def parse(text, event):
     print("---------------")
-    text = " " + text + " "
     print("TWEET : " + text)
     
     print("EVENT : " + event)
