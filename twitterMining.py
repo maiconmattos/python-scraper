@@ -68,10 +68,18 @@ def parse(text, event):
     print("---------------")
     print(" ")
 
-myStreamListener = MyStreamListener
-myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener())
+def start_stream():
+    while True:
+        try:
+            myStreamListener = MyStreamListener
+            myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener())
+            myStream.filter(follow=['89700550'])
+        except: 
+            continue
 
-myStream.filter(follow=['89700550'])
+start_stream()
+
+
 #843856454 - @mobstatsmob
 #89700550 - @officialgaa
 #874639429268381696 - @maiconmattos83
