@@ -19,9 +19,7 @@ print rate_limit['resources']['users']['/users/lookup']
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        textToUpper = (' '.join(text.split()) + " ").upper()
-        
-        status.text.upper()
+        text = (' '.join(status.text.split()) + " ").upper()
         if (text.find("SFC")>=0):
             if (text.startswith('LATEST')):
                 parse(status.text, 'LATEST')
@@ -61,7 +59,7 @@ def parse(text, event):
     textFromTeam2Name = textFromTeam1Score[team1ScoreFinalPos+1:]
     team2NameFinalPos = textFromTeam2Name.find(" ")
     team2Name = textFromTeam2Name[0:team2NameFinalPos]
-    print ("TEAM1_NAME " + team2Name)
+    print ("TEAM2_NAME " + team2Name)
 
     textFromTeam2Score = textFromTeam2Name[team2NameFinalPos+1:]
     team2ScoreFinalPos = textFromTeam2Score.find(" ")
